@@ -1,0 +1,15 @@
+{
+  "name": "mock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:pi2-inspecao-cabo-de-aco/mock.git",
+  "author": "Vitor Borges <vitorbertulucci@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "esm": "^3.2.22",
+    "fs-extra": "^7.0.1",
+    "ftp": "^0.3.10",
+    "ftp-srv": "^4.1.0",
+    "jsftp": "^2.1.3"
+  }
+}
