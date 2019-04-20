@@ -1,0 +1,12 @@
+version: '3.6'
+services:
+  mock:
+    build:
+      context: .
+    #environment:
+    volumes:
+      - "./:/server"
+      - "/server/node_modules"
+    ports:
+      - "21:21"
+
