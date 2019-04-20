@@ -8,7 +8,9 @@ async function main () {
     resolve()
   })
 
-  server.listen()
+  server.listen({
+    host: 'localhost'
+  })
 }
 
 main().then().catch(console.log)
