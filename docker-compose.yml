@@ -3,10 +3,15 @@ services:
   mock:
     build:
       context: .
-    #environment:
+    environment:
+      HOST: server
     volumes:
       - "./:/server"
       - "/server/node_modules"
-    ports:
-      - "21:21"
+    networks:
+      - pi2
+
+networks:
+  pi2:
+    external: true
 

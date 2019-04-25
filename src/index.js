@@ -1,15 +1,23 @@
-import FtpSrv from 'ftp-srv'
+import JSFtp from 'jsftp'
+import fsx from 'fs-extra'
+import Path from 'path'
 
 async function main () {
-  let server = new FtpSrv()
-
-  server.on('login', (data, resolve, reject) => {
-    console.log('Connection stablished.')
-    resolve()
+  let ftp = new JSFtp({
+    port: 3003
   })
 
-  server.listen({
-    host: 'localhost'
+  ftp.auth('pi2', 'pi2', async (err, res) => {
+    if (err) {
+      console.log('Erro on authentication.', err)
+      throw new Error(err.message)
+    }
+
+    let path = Path.resolve(__dirname, '../imagem71.jpg')
+    let file = await fsx.readFile(path)
+    ftp.put(file, '/teste.jpg', (err, res) => {
+      console.log(err, res)
+    })
   })
 }
 
