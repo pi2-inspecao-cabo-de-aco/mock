@@ -4,7 +4,8 @@ import Path from 'path'
 
 async function main () {
   let ftp = new JSFtp({
-    port: 3003
+    host: process.env.HOST || 'localhost',
+    port: 30003
   })
 
   ftp.auth('pi2', 'pi2', async (err, res) => {
