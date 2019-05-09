@@ -1,6 +1,10 @@
 import JSFtp from 'jsftp'
 import fsx from 'fs-extra'
 import Path from 'path'
+import ftpClient from './ftp-client.js'
+import express from 'express'
+import controlApi from './api/control'
+import bodyParser from 'body-parser'
 
 async function main () {
   let ftp = new JSFtp({
@@ -9,16 +13,16 @@ async function main () {
   })
 
   ftp.auth('pi2', 'pi2', async (err, res) => {
-    if (err) {
-      console.log('Erro on authentication.', err)
-      throw new Error(err.message)
-    }
+    await ftpClient(err, res, ftp)
+  })
 
-    let path = Path.resolve(__dirname, '../imagem71.jpg')
-    let file = await fsx.readFile(path)
-    ftp.put(file, '/teste.jpg', (err, res) => {
-      console.log(err, res)
-    })
+  let app = express()
+
+  app.use(bodyParser.urlencoded({ extended: true }))
+  app.use(bodyParser.json())
+  app.use('/control', controlApi())
+  app.listen(3030, () => {
+    console.log('Server running on htttp://localhost:3030')
   })
 }
 
