@@ -1,47 +1,5 @@
 import express from 'express'
-
-let states = {
-  'waiting': {
-    from: null,
-    allowed: 'start'
-  },
-  'running': {
-    from: ['waiting', 'paused'],
-    allowed: ['pause', 'reset']
-  },
-  'paused': {
-    from: 'running',
-    allowed: ['continue', 'reset']
-  },
-  'reseting': {
-    from: ['paused', 'running'],
-    allowed: ['start']
-  }
-}
-
-let stateMachine = {
-  currentState: 'waiting',
-  'start': initAnalisys,
-  'pause': pauseRobot,
-  'continue': continueRobot,
-  'reset': resetState
-}
-
-function initAnalisys (command) {
-  console.log('INICIANDO ANALISE')
-}
-
-function pauseRobot (command) {
-  console.log('PAUSANDO ROBO')
-}
-
-function continueRobot (command) {
-  console.log('CONTINUANDO ANÁLISE')
-}
-
-function resetState (command) {
-  console.log('RESETANDO ESTADO DO ROBO')
-}
+import { stateMachine } from '../state-machine'
 
 export default () => {
   let router = express.Router()

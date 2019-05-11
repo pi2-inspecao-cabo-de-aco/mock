@@ -4,7 +4,7 @@ import Path from 'path'
 
 export default async (err, response, ftp) => {
   if (err) {
-    console.log('Erro on authentication.', err)
+    console.log('Erro on authenticate.', err)
     throw new Error(err.message)
   }
   // let path = Path.resolve(__dirname, '../imagem71.jpg')
