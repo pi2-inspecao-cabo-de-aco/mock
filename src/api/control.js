@@ -12,7 +12,7 @@ export default () => {
     if (body && body.command) {
       let command = stateMachine[body.command]
       if (command && typeof command === 'function') {
-        command(body.command)
+        await command(body.command)
       } else {
         throw new Error('Command not expected')
       }

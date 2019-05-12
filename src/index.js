@@ -7,14 +7,14 @@ import controlApi from './api/control'
 import bodyParser from 'body-parser'
 
 async function main () {
-  let ftp = new JSFtp({
-    host: process.env.HOST || 'localhost',
-    port: 30003
-  })
+  // let ftp = new JSFtp({
+  //   host: process.env.HOST || 'localhost',
+  //   port: 30003
+  // })
 
-  ftp.auth('pi2', 'pi2', async (err, res) => {
-    await ftpClient(err, res, ftp)
-  })
+  // ftp.auth('pi2', 'pi2', async (err, res) => {
+  //   await ftpClient(err, res, ftp)
+  // })
 
   let app = express()
 

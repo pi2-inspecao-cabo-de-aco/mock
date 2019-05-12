@@ -1,12 +1,13 @@
+import { getState } from './state'
 import { initAnalisys } from './init'
 import { pauseRobot } from './pause'
 import { continueRobot } from './continue'
 import { resetState } from './reset'
 
-let states = {
+let ciclingStates = {
   'waiting': {
     from: null,
-    allowed: 'start'
+    allowed: ['start']
   },
   'running': {
     from: ['waiting', 'paused'],
@@ -23,7 +24,6 @@ let states = {
 }
 
 let stateMachine = {
-  currentState: 'waiting',
   'start': initAnalisys,
   'pause': pauseRobot,
   'continue': continueRobot,
@@ -31,6 +31,7 @@ let stateMachine = {
 }
 
 export {
-  states,
+  getState as state,
+  ciclingStates,
   stateMachine
 }
