@@ -4,7 +4,7 @@ import {
   setCurrentAnalysisLocation,
   getCurrentAnalysis
 } from './state'
-import { sleep } from '../helpers/generics'
+import { sleep, getAllowedCommands } from '../helpers/generics'
 import fsx from 'fs-extra'
 import Path from 'path'
 import nodeZip from 'node-zip'
@@ -34,28 +34,33 @@ async function getImages (direction, location) {
 
 async function goRobot () {
   let { direction, location } = getCurrentAnalysis()
+  setState('running')
   let interval = setInterval(async () => {
     console.log('---> Recebendo imagens')
     let zipPath = await getImages(direction, location)
-    // simulate robot displacement
+    // Simulando deslocamento do robo
     location = location + 1
     console.log(`---> Enviando arquivo ${zipPath}`)
     setCurrentAnalysisLocation(location)
   }, 2000)
+  // TODO: Simular o fim do curso do robo
   await sleep(20000)
   clearInterval(interval)
-
 }
 
-async function initAnalisys (command) {
+async function initAnalisys (command, ciclingStates) {
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
-  console.log(`Estado atual: "${state}". Comando desejado: "${command}"`)
-  if (command === 'start' && state === 'waiting') {
-    console.log('INICIANDO ANALISE')
-    await goRobot()
+  console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
+  if (command === 'start') {
+    if (state === 'waiting') {
+      console.log('INICIANDO ANALISE')
+      await goRobot()
+    } else {
+      return { err: 'Robô já iniciou uma análise.' }
+    }
   } else {
-    throw new Error('Comando ou estado não permitido.')
+    return { err: 'Comando ou estado não permitido.' }
   }
 }
 

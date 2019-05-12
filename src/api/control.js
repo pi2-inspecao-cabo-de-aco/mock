@@ -1,5 +1,5 @@
 import express from 'express'
-import { stateMachine } from '../state-machine'
+import { stateMachine, ciclingStates } from '../state-machine'
 
 export default () => {
   let router = express.Router()
@@ -12,9 +12,16 @@ export default () => {
     if (body && body.command) {
       let command = stateMachine[body.command]
       if (command && typeof command === 'function') {
-        await command(body.command)
+        try {
+          let result = await command(body.command, ciclingStates)
+          if (result && result.err) {
+            res.status(500).send(result.err)
+          }
+        } catch (err) {
+          res.status(500).send(err.message)
+        }
       } else {
-        throw new Error('Command not expected')
+        res.status(500).send('Comando não esperado ou permitido.')
       }
     }
     res.send({ success: true })

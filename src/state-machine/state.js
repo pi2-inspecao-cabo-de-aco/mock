@@ -7,8 +7,14 @@ let state = {
   currentInterval: null
 }
 
-function setState (state) {
-  state.state = state
+function setState (currentState) {
+  let allowedStates = ['waiting', 'running', 'paused', 'reseting']
+  let index = allowedStates.indexOf(currentState)
+  if (index > -1) {
+    state.state = currentState
+  } else {
+    throw new Error('Estado não permitido')
+  }
 }
 
 function getState () {
