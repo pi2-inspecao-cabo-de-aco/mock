@@ -2,7 +2,6 @@ import {
   setState,
   getState,
   setCurrentAnalysisLocation,
-  setCurrentAnalysisDirection,
   getCurrentAnalysis
 } from './state'
 import { sleep } from '../helpers/generics'
@@ -18,20 +17,34 @@ async function getImages (direction, location) {
   let image = await fsx.readFile(imagePath)
   const zip = nodeZip()
   for (let i = 0; i < 4; i++) {
+    console.log(`------> Imagem da câmera ${i + 1}.`)
     zip.file(`imagem-cam-${i + 1}.png`, image)
   }
+  console.log('---> Zipando imagens.')
   let data = zip.generate({
     base64: false,
     compression: 'DEFLATE'
   })
-  await fsx.writeFile(Path.join(IMAGES_FOLDER, 'zipin.zip'), data, 'binary')
-  // join images and create zip
-  // send images using FTP
+  let time = Date.now()
+  console.log('---> Criando zip')
+  let zipPath = Path.join(IMAGES_FOLDER, `${time}-${location}.zip`)
+  await fsx.writeFile(zipPath, data, 'binary')
+  return zipPath
 }
 
 async function goRobot () {
   let { direction, location } = getCurrentAnalysis()
-  await getImages(direction, location)
+  let interval = setInterval(async () => {
+    console.log('---> Recebendo imagens')
+    let zipPath = await getImages(direction, location)
+    // simulate robot displacement
+    location = location + 1
+    console.log(`---> Enviando arquivo ${zipPath}`)
+    setCurrentAnalysisLocation(location)
+  }, 2000)
+  await sleep(20000)
+  clearInterval(interval)
+
 }
 
 async function initAnalisys (command) {
