@@ -1,19 +1,18 @@
 import JSFtp from 'jsftp'
-import fsx from 'fs-extra'
-import Path from 'path'
-import ftpClient from './ftp-client.js'
+import { setFTP } from './ftp-client.js'
 import express from 'express'
 import controlApi from './api/control'
 import bodyParser from 'body-parser'
 
 async function main () {
-  let ftp = new JSFtp({
+  let ftpInstance = new JSFtp({
     host: process.env.HOST || 'localhost',
     port: 30003
   })
 
-  ftp.auth('pi2', 'pi2', async (err, res) => {
-    await ftpClient(err, res, ftp)
+  ftpInstance.auth('pi2', 'pi2', async (err, res) => {
+    console.log('FTP autenticado. Permissão para transferir arquivos.')
+    await setFTP(err, res, ftpInstance)
   })
 
   let app = express()
