@@ -1,14 +1,14 @@
-import JSFtp from 'jsftp'
-import fsx from 'fs-extra'
-import Path from 'path'
+let ftp = null
 
-export default async (err, response, ftp) => {
+function setFTP (err, response, ftpConfig) {
   if (err) {
     console.log('Erro on authenticate.', err)
     throw new Error(err.message)
   }
-  // let path = Path.resolve(__dirname, '../imagem71.jpg')
-  // let file = await fsx.readFile(path)
-  // ftp.put(file, '/teste.jpg', (err, res) => {
-  // })
+  ftp = ftpConfig
+}
+
+export {
+  ftp,
+  setFTP
 }

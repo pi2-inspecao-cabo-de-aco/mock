@@ -8,6 +8,8 @@ import { sleep, getAllowedCommands } from '../helpers/generics'
 import fsx from 'fs-extra'
 import Path from 'path'
 import nodeZip from 'node-zip'
+import { ftp } from '../ftp-client'
+import util from 'util'
 
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
@@ -27,9 +29,10 @@ async function getImages (direction, location) {
   })
   let time = Date.now()
   console.log('---> Criando zip')
-  let zipPath = Path.join(IMAGES_FOLDER, `${time}-${location}.zip`)
+  let filename = `${time}-${location}.zip`
+  let zipPath = Path.join(IMAGES_FOLDER, filename)
   await fsx.writeFile(zipPath, data, 'binary')
-  return zipPath
+  return { zipPath, filename }
 }
 
 async function goRobot () {
@@ -37,11 +40,18 @@ async function goRobot () {
   setState('running')
   let interval = setInterval(async () => {
     console.log('---> Recebendo imagens')
-    let zipPath = await getImages(direction, location)
+    let { zipPath, filename } = await getImages(direction, location)
     // Simulando deslocamento do robo
     location = location + 1
-    console.log(`---> Enviando arquivo ${zipPath}`)
+    console.log(`---> Enviando arquivo ${filename}`)
     setCurrentAnalysisLocation(location)
+    let zipFile = await fsx.readFile(zipPath)
+    ftp.put(zipFile, `public/${filename}`, (err) => {
+      if (err) {
+        console.log(`---------> Error: ${err.message} <---------`)
+      }
+      console.log(`------> Arquivo ${filename} enviado.`)
+    })
   }, 2000)
   // TODO: Simular o fim do curso do robo
   await sleep(20000)
