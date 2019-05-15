@@ -21,7 +21,7 @@ async function main () {
   app.use(bodyParser.json())
   app.use('/control', controlApi())
   app.listen(3030, () => {
-    console.log('Server running on htttp://localhost:3030')
+    console.log('Server running on http://localhost:3030')
   })
 }
 
