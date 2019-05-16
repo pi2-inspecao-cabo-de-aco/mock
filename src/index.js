@@ -6,8 +6,8 @@ import bodyParser from 'body-parser'
 
 async function main () {
   let ftpInstance = new JSFtp({
-    host: process.env.HOST || 'localhost',
-    port: 30003
+    host: process.env.FTP_HOST || 'localhost',
+    port: process.env.FTP_PORT || 30003
   })
 
   ftpInstance.auth('pi2', 'pi2', async (err, res) => {
@@ -20,7 +20,7 @@ async function main () {
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
   app.use('/control', controlApi())
-  app.listen(3030, () => {
+  app.listen((process.env.HTTP_PORT || 3030), () => {
     console.log('Server running on htttp://localhost:3030')
   })
 }
