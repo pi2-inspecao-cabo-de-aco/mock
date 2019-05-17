@@ -12,13 +12,13 @@ async function pauseRobot (command, ciclingStates) {
     if (state === 'running') {
       setState('paused')
       state = getState()
-      console.log('----------------------------------------');
-      console.log(`Máquina parada. Estado atual: "${state}"`);
+      console.log('----------------------------------------')
+      console.log(`Máquina parada. Estado atual: "${state}"`)
     } else if (state === 'paused') {
       // Put the correct error here
       return { err: 'Robô já está parado' }
     } else {
-      return { err: 'O robô não pode ser parado agora. Tente outro comando' } 
+      return { err: 'O robô não pode ser parado agora. Tente outro comando' }
     }
   } else {
     return { err: 'Comando ou estado não permitido.' }

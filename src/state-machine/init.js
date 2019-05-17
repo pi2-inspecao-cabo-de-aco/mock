@@ -44,6 +44,11 @@ async function goRobot () {
     // Simulando deslocamento do robo
     location = location + 1
     console.log(`---> Enviando arquivo ${filename}`)
+    console.log(`Estado atual: "${getState()}".`)
+    if (getState() === 'paused') {
+      return false
+    }
+    await sleep(10000)
     setCurrentAnalysisLocation(location)
     let zipFile = await fsx.readFile(zipPath)
     ftp.put(zipFile, `public/${filename}`, (err) => {
