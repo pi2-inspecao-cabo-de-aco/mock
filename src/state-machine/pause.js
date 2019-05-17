@@ -1,21 +1,24 @@
 import {
   setState,
-  getState,
-  setCurrentAnalysisLocation,
-  getCurrentAnalysis
+  getState
 } from './state'
-import { sleep, getAllowedCommands } from '../helpers/generics'
+import { getAllowedCommands } from '../helpers/generics'
 
-async function pauseRobot () {
+async function pauseRobot (command, ciclingStates) {
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
   if (command === 'pause') {
-    if (state === 'waiting') {
-      // what pause should do? Just change the state of state_machine ?
-    } else {
+    if (state === 'running') {
+      setState('paused')
+      state = getState()
+      console.log('----------------------------------------');
+      console.log(`Máquina parada. Estado atual: "${state}"`);
+    } else if (state === 'paused') {
       // Put the correct error here
-      return { err: '' }
+      return { err: 'Robô já está parado' }
+    } else {
+      return { err: 'O robô não pode ser parado agora. Tente outro comando' } 
     }
   } else {
     return { err: 'Comando ou estado não permitido.' }
