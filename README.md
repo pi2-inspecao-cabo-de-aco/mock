@@ -53,7 +53,7 @@ src
 
 ## Processo de instalação
 
-O projeto funciona basicamente como um cliente FTP e um servidor HTTP. Para tanto, é necessário a configuração dos HOSTs e PORTs que os mesmos devem se comunicar. Para isso, existem as variáveis de ambiente explicadas à seguir:
+O projeto funciona, basicamente, como um cliente FTP e um servidor HTTP. Para tal, é necessário a configuração dos HOSTs e PORTs para que eles possam se comunicar. Para isso, existem as variáveis de ambiente explicadas à seguir:
 - **FTP_HOST**: variável para configurar o IP do serviço que configurado para ser o servidor FTP, no caso o [main-server](https://github.com/pi2-fga/201901-InspecaoCaboDeAco-MainServer);
 - **FTP_PORT**: variável para configurar a porta a qual o cliente FTP estará disponível. Por padrão, a porta é mapeada para a port 30003;
 - **HTTP_PORT**: variável para configurar o servidor HTTP, mapeada por padrão para a porta 3030.
