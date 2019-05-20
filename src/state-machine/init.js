@@ -2,7 +2,8 @@ import {
   setState,
   getState,
   setCurrentAnalysisLocation,
-  getCurrentAnalysis
+  getCurrentAnalysis,
+  setCurrentInterval
 } from './state'
 import { sleep, getAllowedCommands } from '../helpers/generics'
 import fsx from 'fs-extra'
@@ -45,10 +46,6 @@ async function goRobot () {
     location = location + 1
     console.log(`---> Enviando arquivo ${filename}`)
     console.log(`Estado atual: "${getState()}".`)
-    if (getState() === 'paused') {
-      return false
-    }
-    await sleep(10000)
     setCurrentAnalysisLocation(location)
     let zipFile = await fsx.readFile(zipPath)
     ftp.put(zipFile, `public/${filename}`, (err) => {
@@ -58,6 +55,7 @@ async function goRobot () {
       console.log(`------> Arquivo ${filename} enviado.`)
     })
   }, 2000)
+  setCurrentInterval(interval)
   // TODO: Simular o fim do curso do robo
   await sleep(20000)
   clearInterval(interval)
@@ -68,7 +66,7 @@ async function initAnalisys (command, ciclingStates) {
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
   if (command === 'start') {
-    if (state === 'waiting') {
+    if (state === 'waiting' || state === 'paused') {
       console.log('INICIANDO ANALISE')
       await goRobot()
     } else {
