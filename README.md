@@ -1,14 +1,40 @@
-# Descrição
+<h1 align="center">
+  <a href="https://github.com/pi2-fga/201901-InspecaoCaboDeAco-Frontend" target="_blank">
+    <img src="./docs/logo.png" />
+  </a>
+</h1>
+
+<p align="center">
+  Este projeto é referente ao <i>Mock</i> para simular as atividades de comando e controle do Robô de Inspeção de Cabo de Aço, da disciplina de PI2, desenvolvido em:<br>
+  <strong>Node, Express, jsftp e node-zip.</strong>
+</p>
+
+<p align="center">
+  <a href="https://nodejs.org/es/blog/release/v10.15.3/">
+    <img src="https://img.shields.io/badge/node-v10.15.3-brightgreen.svg" alt="Versão do Node" />
+  </a>
+  <a href="https://expressjs.com/pt-br/">
+    <img src="https://img.shields.io/badge/express-4.16.4-lightgrey.svg" alt="Versão do Express" />
+  </a>
+  <a href="https://www.npmjs.com/package/jsftp">
+    <img src="https://img.shields.io/badge/jsftp-2.1.3-yellow.svg" alt="Versão do jsftp" />
+  </a>
+  <a href="https://www.npmjs.com/package/node-zip">
+    <img src="https://img.shields.io/badge/node_zip-2.1.3-blue.svg" alt="Versão do node-zip" />
+  </a>
+</p>
+
+# 📋 Descrição
 
 O projeto _mock_ é um sistema desenvolvido para o projeto de Inspeção de Cabos de Aço da disciplina de Projeto Integrado 2 da Universidade de Brasília, campus FGA, Faculdade do Gama.
 
-## Motivação
+## 💪 Motivação
 
 Basicamente, as últimas etapas de desenvolvimento do projeto consistem em desenvolver uma solução para inspeção automatizada do cabo e, junto a isso, uma validação/teste dos componentes/subsistemas da solução gerada. Após isso, há uma etapa de integração entre os subsistemas da solução (Engenharia de Software e Engenharia Eletrônica/Energia).
 
 Com isso, para mitigar os riscos da ultima etapa de integração e possibilitar o desenvolvimento e teste da solução de software sem a necessidade da solução desenvolvida pela equipe de eletrônica/energia, foi-se desenvolvido um sistema para simular todas as atividades que o robô de inspeção realizaria.
 
-## Features
+## 🛠 Features
 O sistema, para simular corretamente o functionamento do robô, deve possuir as seguintes características:
 - Fornecer um endpoint HTTP para recebimento de comandos de controle;
 - Servir como cliente FTP para envio de arquivos;
@@ -17,9 +43,9 @@ O sistema, para simular corretamente o functionamento do robô, deve possuir as 
 - Permitir receber comandos de 'start', 'stop', 'pause', 'wait' e comandos de orientação, como 'left' e 'right';
 - Simular o deslocamento do robô e armazenar o mesmo.
 
-![](FSM2.png)
+![](docs/FSM2.png)
 
-## Arquitetura de pastas
+## 📁 Arquitetura de pastas
 
 Para a organização o projeto, foi identificada a necessidade de, basicamente, 3 grandes funcionalidades:
 - Servidor HTTP;
@@ -51,7 +77,7 @@ src
 - **index**: arquivo que centraliza a inicialização e todas as chamadas de configuração dos demais módulos. Funciona como a _main_ do projeto.
 - **state-machine**: armazena a máquina de estados e todas as funções que fazem o controle da mesma, descritas cada um em um arquivo, como é possível ver na estrutura supracitada.
 
-## Processo de instalação
+## 💻 Processo de instalação
 
 O projeto funciona, basicamente, como um cliente FTP e um servidor HTTP. Para tal, é necessário a configuração dos HOSTs e PORTs para que eles possam se comunicar. Para isso, existem as variáveis de ambiente explicadas à seguir:
 - **FTP_HOST**: variável para configurar o IP do serviço que configurado para ser o servidor FTP, no caso o [main-server](https://github.com/pi2-fga/201901-InspecaoCaboDeAco-MainServer);
@@ -69,7 +95,7 @@ Com isso, para executar o serviço basta executar o seguinte comando na linha de
 
 Com isso, o serviço estará disponível para uso.
 
-## Funcionamento, Entradas e Saídas
+## ⚙ Funcionamento, Entradas e Saídas
 
 A base do funcionamento do serviço é por meio do protocolo HTTP. Com isso, existem as seguintes URLs disponíveis:
 - **'/control'**: esse _endpoint_ deve receber um comando do tipo POST possuindo o seguinte parâmetro: `{ command: 'comando_de_controle' }`. Esse parâmetro pode possuir os seguintes valores:
@@ -78,7 +104,7 @@ A base do funcionamento do serviço é por meio do protocolo HTTP. Com isso, exi
   - **continue**: comando para dar continualidade a análise que foi parada anteriormente;
   - **reset**: comando para cancelar a análise e retornar o robô para a posição inicial.
 
-## Tenologias
+## 🚀 Tecnologias
 
 O sistema foi desenvolvido utilizando Node configurado em um container Docker utilizando a imagem `node:alpine`. As principais tecnologias utilizadas são:
 - **express**: _framework web_ que possibilita a criação, configuração e uso de maneira fácil e intuitiva de servidores HTTP. Veja mais em https://expressjs.com/pt-br/
