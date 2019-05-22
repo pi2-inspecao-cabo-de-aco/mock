@@ -3,12 +3,12 @@ import {
   getState,
   setCurrentInterval,
   getCurrentInterval,
-  setCurrentAnalysisLocation,
-  setCurrentAnalysisDirection
+  setCurrentAnalysisLocation
+  // setCurrentAnalysisDirection
 } from './state'
 import { getAllowedCommands } from '../helpers/generics'
 
-async function resetState (command) {
+async function resetState (command, ciclingStates) {
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
@@ -17,7 +17,7 @@ async function resetState (command) {
       let interval = getCurrentInterval()
       setCurrentInterval(clearInterval(interval))
       setState('reseting')
-      setCurrentAnalysisDirection(0)
+      setCurrentAnalysisLocation(0)
       state = getState()
       // Reiniciar a maquina aqui
       console.log('----------------------------------------')
