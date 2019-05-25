@@ -4,7 +4,7 @@ services:
     build:
       context: .
     environment:
-      HOST: server
+      FTP_HOST: server
     volumes:
       - "./:/server"
       - "/server/node_modules"

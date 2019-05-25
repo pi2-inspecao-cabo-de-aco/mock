@@ -10,7 +10,7 @@ import fsx from 'fs-extra'
 import Path from 'path'
 import nodeZip from 'node-zip'
 import { ftp } from '../ftp-client'
-import util from 'util'
+// import util from 'util'
 
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
