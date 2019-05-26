@@ -79,5 +79,6 @@ async function initAnalisys (command, ciclingStates) {
 
 export {
   initAnalisys,
-  goRobot
+  goRobot,
+  getImages
 }
