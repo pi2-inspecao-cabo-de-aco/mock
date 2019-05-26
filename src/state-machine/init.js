@@ -3,7 +3,8 @@ import {
   getState,
   setCurrentAnalysisLocation,
   getCurrentAnalysis,
-  setCurrentInterval
+  setCurrentInterval,
+  setLastImageCapture
 } from './state'
 import { sleep, getAllowedCommands } from '../helpers/generics'
 import fsx from 'fs-extra'
@@ -33,6 +34,7 @@ async function getImages (direction, location) {
   let filename = `${time}-${location}.zip`
   let zipPath = Path.join(IMAGES_FOLDER, filename)
   await fsx.writeFile(zipPath, data, 'binary')
+  setLastImageCapture(location)
   return { zipPath, filename }
 }
 

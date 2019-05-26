@@ -1,15 +1,13 @@
 import {
   setState,
   getState,
-  setCurrentInterval,
-  getCurrentInterval,
   setCurrentAnalysisLocation,
-  setCurrentAnalysisDirection,
+  setCurrentAnalysisDirection
 } from './state'
 import { pauseRobot } from './pause'
 import { getImages } from './init'
 import { getAllowedCommands } from '../helpers/generics'
-import { ciclingStates } from '../state-machine'
+// import { ciclingStates } from '../state-machine'
 
 import fsx from 'fs-extra'
 import Path from 'path'
@@ -20,7 +18,7 @@ async function moveRobotR (command, ciclingStates) {
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
-  if (command === 'movel') {
+  if (command === 'mover') {
     if (state === 'pased') {
       // flow que deve ter aqui:
       // verificar se o estado é o paused.
@@ -45,7 +43,7 @@ async function moveRobotR (command, ciclingStates) {
   }
 }
 async function setRightMove() {
-  let { direction, location } = getCurrentAnalysis()
+  let { location } = getCurrentAnalysis()
   setCurrentAnalysisLocation(location + 1)
   setCurrentAnalysisDirection('right')
 }
