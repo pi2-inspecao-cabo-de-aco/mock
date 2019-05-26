@@ -2,7 +2,8 @@ let state = {
   state: 'waiting',
   currentAnalysis: {
     direction: 'right',
-    location: 1
+    location: 1,
+    lastImageCapture: 0
   },
   currentInterval: null
 }
@@ -29,6 +30,10 @@ function setCurrentAnalysisDirection (direction) {
   state.currentAnalysis.direction = direction
 }
 
+function setLastImageCapture (lastImageCapture) {
+  state.currentAnalysis.lastImageCapture = lastImageCapture
+}
+
 function getCurrentAnalysis () {
   return state.currentAnalysis
 }
@@ -46,6 +51,7 @@ export {
   getState,
   setCurrentAnalysisLocation,
   setCurrentAnalysisDirection,
+  setLastImageCapture,
   getCurrentAnalysis,
   setCurrentInterval,
   getCurrentInterval
