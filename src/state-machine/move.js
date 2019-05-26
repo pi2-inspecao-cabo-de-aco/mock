@@ -14,8 +14,8 @@ async function moveRobot (command, ciclingStates) {
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
   // flow que deve ter aqui:
   // verificar se o estado é o paused.
-  // colocar estado como moving
-  // Mover o robo na direcao correta.
+  // colocar estado como movingl ou movingr
+  // Mover o robo na direcao correta. (usar a funcao correta para isso)
   // rodar o goRobot apenas uma vez
   // voltar para o estado de paused
   if (command === 'move') {

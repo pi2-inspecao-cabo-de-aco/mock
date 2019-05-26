@@ -8,7 +8,7 @@ let state = {
 }
 
 function setState (currentState) {
-  let allowedStates = ['waiting', 'running', 'paused', 'reseting']
+  let allowedStates = ['waiting', 'running', 'paused', 'reseting', 'movingl', 'movingr']
   let index = allowedStates.indexOf(currentState)
   if (index > -1) {
     state.state = currentState
