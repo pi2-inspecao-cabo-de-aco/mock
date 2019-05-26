@@ -11,7 +11,7 @@ async function pauseRobot (command, ciclingStates) {
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
   if (command === 'pause') {
-    if (state === 'running') {
+    if (state === 'running' || state === 'movingr' || state === 'movingl') {
       let interval = getCurrentInterval()
       setCurrentInterval(clearInterval(interval))
       setState('paused')

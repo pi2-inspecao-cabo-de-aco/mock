@@ -1,6 +1,7 @@
 import {
   setState,
   getState,
+  getCurrentAnalysis,
   setCurrentAnalysisLocation,
   setCurrentAnalysisDirection
 } from './state'
@@ -18,8 +19,11 @@ async function moveRobotR (command, ciclingStates) {
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
+  console.log('--------------------------------------')
+  console.log('COMANDO: ' + command)
+  console.log('STATE: ' + state)
   if (command === 'mover') {
-    if (state === 'pased') {
+    if (state === 'paused') {
       // flow que deve ter aqui:
       // verificar se o estado é o paused.
       // colocar estado como movingl ou movingr
@@ -32,7 +36,7 @@ async function moveRobotR (command, ciclingStates) {
       console.log(`Máquina em movimento. Estado atual: "${state}"`)
       await setRightMove()
       await sendImages()
-      pauseRobot('pause', ciclingStates)
+      await pauseRobot('pause', ciclingStates)
     } else if (state === 'moving') {
       return { err: '' }
     } else {
@@ -42,12 +46,14 @@ async function moveRobotR (command, ciclingStates) {
     return { err: 'Comando ou estado não permitido.' }
   }
 }
-async function setRightMove() {
+
+async function setRightMove () {
   let { location } = getCurrentAnalysis()
   setCurrentAnalysisLocation(location + 1)
   setCurrentAnalysisDirection('right')
 }
-async function sendImages() {
+
+async function sendImages () {
   let { direction, location } = getCurrentAnalysis()
   let { zipPath, filename } = await getImages(direction, location)
   console.log(`---> Enviando arquivo ${filename}`)
@@ -61,6 +67,6 @@ async function sendImages() {
 }
 
 export {
-  moveRobotR,
-  moveRobotL
+  moveRobotR
+  // moveRobotL
 }
