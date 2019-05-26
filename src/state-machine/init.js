@@ -39,9 +39,13 @@ async function getImages (direction, location) {
 }
 
 async function goRobot () {
-  let { direction, location } = getCurrentAnalysis()
+  let { direction, location, lastImageCapture } = getCurrentAnalysis()
   setState('running')
   let interval = setInterval(async () => {
+    if (location === lastImageCapture) {
+      setCurrentAnalysisLocation(location + 1)
+      location = getCurrentAnalysis().location
+    }
     console.log('---> Recebendo imagens')
     let { zipPath, filename } = await getImages(direction, location)
     // Simulando deslocamento do robo

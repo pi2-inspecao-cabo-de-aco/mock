@@ -48,8 +48,10 @@ async function moveRobotR (command, ciclingStates) {
 }
 
 async function setRightMove () {
-  let { location } = getCurrentAnalysis()
-  setCurrentAnalysisLocation(location + 1)
+  let { location, lastImageCapture } = getCurrentAnalysis()
+  if (location - 1 !== lastImageCapture) {
+    setCurrentAnalysisLocation(location + 1)
+  }
   setCurrentAnalysisDirection('right')
 }
 
