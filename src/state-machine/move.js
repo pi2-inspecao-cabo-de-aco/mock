@@ -29,9 +29,9 @@ async function moveRobotR (command, ciclingStates) {
       await sendImages()
       await pauseRobot('pause', ciclingStates)
     } else if (state === 'movingr') {
-      return { err: '' }
+      return { err: 'Máquina já está em movimento, direção: direita' }
     } else {
-      return { err: '' }
+      return { err: 'Robô não pode ser movimentado agora' }
     }
   } else {
     return { err: 'Comando ou estado não permitido.' }
@@ -50,14 +50,14 @@ async function moveRobotL (command, ciclingStates) {
       setState('movingl')
       state = getState()
       console.log('----------------------------------------')
-      console.log(`Máquina em movimento. Estado atual: "${state}"`)
+      console.log(`Robô em movimento. Estado atual: "${state}"`)
       await setLeftMove()
       await sendImages()
       await pauseRobot('pause', ciclingStates)
     } else if (state === 'movingl') {
-      return { err: '' }
+      return { err: 'Robô já está em movimento, direção: esquerda' }
     } else {
-      return { err: '' }
+      return { err: 'Robô não pode ser movimentado agora' }
     }
   } else {
     return { err: 'Comando ou estado não permitido.' }

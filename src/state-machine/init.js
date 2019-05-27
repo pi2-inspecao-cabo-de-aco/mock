@@ -16,7 +16,6 @@ import { ftp } from '../ftp-client'
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
 async function getImages (direction, location) {
-  // read image based on location and direction attribute
   let imagePath = Path.resolve(IMAGES_FOLDER, `${location}.png`)
   let image = await fsx.readFile(imagePath)
   const zip = nodeZip()
