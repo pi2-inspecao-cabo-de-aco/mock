@@ -3,7 +3,7 @@ import { initAnalisys } from './init'
 import { pauseRobot } from './pause'
 import { continueRobot } from './continue'
 import { resetState } from './reset'
-import { moveRobotR } from './move'
+import { moveRobotL, moveRobotR } from './move'
 
 let ciclingStates = {
   'waiting': {
@@ -37,7 +37,7 @@ let stateMachine = {
   'pause': pauseRobot,
   'continue': continueRobot,
   'reset': resetState,
-  // 'movel': moveRobotL,
+  'movel': moveRobotL,
   'mover': moveRobotR
 }
 

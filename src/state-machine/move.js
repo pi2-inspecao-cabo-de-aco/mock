@@ -8,11 +8,8 @@ import {
 import { pauseRobot } from './pause'
 import { getImages } from './init'
 import { getAllowedCommands } from '../helpers/generics'
-// import { ciclingStates } from '../state-machine'
 
 import fsx from 'fs-extra'
-import Path from 'path'
-import nodeZip from 'node-zip'
 import { ftp } from '../ftp-client'
 
 async function moveRobotR (command, ciclingStates) {
@@ -24,12 +21,6 @@ async function moveRobotR (command, ciclingStates) {
   console.log('STATE: ' + state)
   if (command === 'mover') {
     if (state === 'paused') {
-      // flow que deve ter aqui:
-      // verificar se o estado é o paused.
-      // colocar estado como movingl ou movingr
-      // Mover o robo na direcao correta. (usar a funcao correta para isso)
-      // rodar o goRobot apenas uma vez
-      // voltar para o estado de paused
       setState('movingr')
       state = getState()
       console.log('----------------------------------------')
@@ -37,7 +28,33 @@ async function moveRobotR (command, ciclingStates) {
       await setRightMove()
       await sendImages()
       await pauseRobot('pause', ciclingStates)
-    } else if (state === 'moving') {
+    } else if (state === 'movingr') {
+      return { err: '' }
+    } else {
+      return { err: '' }
+    }
+  } else {
+    return { err: 'Comando ou estado não permitido.' }
+  }
+}
+
+async function moveRobotL (command, ciclingStates) {
+  console.log('CHECANDO ESTADO DA MÁQUINA...')
+  let state = getState()
+  console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
+  console.log('--------------------------------------')
+  console.log('COMANDO: ' + command)
+  console.log('STATE: ' + state)
+  if (command === 'movel') {
+    if (state === 'paused') {
+      setState('movingl')
+      state = getState()
+      console.log('----------------------------------------')
+      console.log(`Máquina em movimento. Estado atual: "${state}"`)
+      await setLeftMove()
+      await sendImages()
+      await pauseRobot('pause', ciclingStates)
+    } else if (state === 'movingl') {
       return { err: '' }
     } else {
       return { err: '' }
@@ -49,10 +66,20 @@ async function moveRobotR (command, ciclingStates) {
 
 async function setRightMove () {
   let { location, lastImageCapture } = getCurrentAnalysis()
-  if (location - 1 !== lastImageCapture) {
+  if (location === lastImageCapture) {
     setCurrentAnalysisLocation(location + 1)
   }
   setCurrentAnalysisDirection('right')
+}
+
+async function setLeftMove () {
+  let { location, lastImageCapture } = getCurrentAnalysis()
+  if (location === lastImageCapture) {
+    setCurrentAnalysisLocation(location - 1)
+  } else if (location === lastImageCapture + 1) {
+    setCurrentAnalysisLocation(location - 2)
+  }
+  setCurrentAnalysisDirection('left')
 }
 
 async function sendImages () {
@@ -69,6 +96,6 @@ async function sendImages () {
 }
 
 export {
-  moveRobotR
-  // moveRobotL
+  moveRobotR,
+  moveRobotL
 }
