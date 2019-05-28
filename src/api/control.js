@@ -13,10 +13,15 @@ export default () => {
       let command = stateMachine[body.command]
       if (command && typeof command === 'function') {
         try {
-          let result = await command(body.command, ciclingStates)
-          if (result && result.err) {
-            res.status(500).send(result.err)
-          }
+          // eslint-disable-next-line
+          new Promise(async (resolve, reject) => {
+            await command(body.command, ciclingStates)
+            resolve()
+            // if (result && result.err) {
+            //   res.status(500).send(result.err)
+            // }
+          })
+          res.status(200).send({ success: true })
         } catch (err) {
           res.status(500).send(err.message)
         }
@@ -24,7 +29,6 @@ export default () => {
         res.status(500).send('Comando não esperado ou permitido.')
       }
     }
-    res.send({ success: true })
   })
   return router
 }
