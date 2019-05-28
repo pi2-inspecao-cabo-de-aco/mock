@@ -2,13 +2,14 @@ let state = {
   state: 'waiting',
   currentAnalysis: {
     direction: 'right',
-    location: 1
+    location: 1,
+    lastImageCapture: 0
   },
   currentInterval: null
 }
 
 function setState (currentState) {
-  let allowedStates = ['waiting', 'running', 'paused', 'reseting']
+  let allowedStates = ['waiting', 'running', 'paused', 'reseting', 'moving_l', 'moving_r']
   let index = allowedStates.indexOf(currentState)
   if (index > -1) {
     state.state = currentState
@@ -29,6 +30,10 @@ function setCurrentAnalysisDirection (direction) {
   state.currentAnalysis.direction = direction
 }
 
+function setLastImageCapture (lastImageCapture) {
+  state.currentAnalysis.lastImageCapture = lastImageCapture
+}
+
 function getCurrentAnalysis () {
   return state.currentAnalysis
 }
@@ -46,6 +51,7 @@ export {
   getState,
   setCurrentAnalysisLocation,
   setCurrentAnalysisDirection,
+  setLastImageCapture,
   getCurrentAnalysis,
   setCurrentInterval,
   getCurrentInterval

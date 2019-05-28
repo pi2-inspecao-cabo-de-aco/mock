@@ -3,7 +3,8 @@ import {
   getState,
   setCurrentAnalysisLocation,
   getCurrentAnalysis,
-  setCurrentInterval
+  setCurrentInterval,
+  setLastImageCapture
 } from './state'
 import { sleep, getAllowedCommands } from '../helpers/generics'
 import fsx from 'fs-extra'
@@ -15,7 +16,6 @@ import { ftp } from '../ftp-client'
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
 async function getImages (direction, location) {
-  // read image based on location and direction attribute
   let imagePath = Path.resolve(IMAGES_FOLDER, `${location}.png`)
   let image = await fsx.readFile(imagePath)
   const zip = nodeZip()
@@ -33,13 +33,18 @@ async function getImages (direction, location) {
   let filename = `${time}-${location}.zip`
   let zipPath = Path.join(IMAGES_FOLDER, filename)
   await fsx.writeFile(zipPath, data, 'binary')
+  setLastImageCapture(location)
   return { zipPath, filename }
 }
 
 async function goRobot () {
-  let { direction, location } = getCurrentAnalysis()
+  let { direction, location, lastImageCapture } = getCurrentAnalysis()
   setState('running')
   let interval = setInterval(async () => {
+    if (location === lastImageCapture) {
+      setCurrentAnalysisLocation(location + 1)
+      location = getCurrentAnalysis().location
+    }
     console.log('---> Recebendo imagens')
     let { zipPath, filename } = await getImages(direction, location)
     // Simulando deslocamento do robo
@@ -79,5 +84,6 @@ async function initAnalisys (command, ciclingStates) {
 
 export {
   initAnalisys,
-  goRobot
+  goRobot,
+  getImages
 }
