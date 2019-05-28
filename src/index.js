@@ -3,6 +3,7 @@ import { setFTP } from './ftp-client.js'
 import express from 'express'
 import controlApi from './api/control'
 import bodyParser from 'body-parser'
+import cors from 'cors'
 
 async function main () {
   let ftpInstance = new JSFtp({
@@ -17,6 +18,7 @@ async function main () {
 
   let app = express()
 
+  app.use(cors())
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(bodyParser.json())
   app.use('/control', controlApi())
