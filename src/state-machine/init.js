@@ -71,7 +71,7 @@ async function initAnalisys (command, ciclingStates) {
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
   if (command === 'start') {
-    if (state === 'waiting' || state === 'paused') {
+    if (state === 'waiting' || state === 'paused' || state === 'reseting') {
       console.log('INICIANDO ANALISE')
       await goRobot()
     } else {
