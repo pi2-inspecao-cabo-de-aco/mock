@@ -17,7 +17,7 @@ async function resetState (command, ciclingStates) {
       let interval = getCurrentInterval()
       setCurrentInterval(clearInterval(interval))
       setState('reseting')
-      setCurrentAnalysisLocation(0)
+      setCurrentAnalysisLocation(1)
       state = getState()
       // Reiniciar a maquina aqui
       console.log('----------------------------------------')
