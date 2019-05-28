@@ -13,22 +13,20 @@ import fsx from 'fs-extra'
 import { ftp } from '../ftp-client'
 
 async function moveRobotR (command, ciclingStates) {
+  await pauseRobot('pause', ciclingStates)
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
-  console.log('--------------------------------------')
-  console.log('COMANDO: ' + command)
-  console.log('STATE: ' + state)
-  if (command === 'mover') {
+  if (command === 'right') {
     if (state === 'paused') {
-      setState('movingr')
+      setState('moving_r')
       state = getState()
       console.log('----------------------------------------')
       console.log(`Máquina em movimento. Estado atual: "${state}"`)
       await setRightMove()
       await sendImages()
       await pauseRobot('pause', ciclingStates)
-    } else if (state === 'movingr') {
+    } else if (state === 'moving_r') {
       return { err: 'Máquina já está em movimento, direção: direita' }
     } else {
       return { err: 'Robô não pode ser movimentado agora' }
@@ -39,22 +37,20 @@ async function moveRobotR (command, ciclingStates) {
 }
 
 async function moveRobotL (command, ciclingStates) {
+  await pauseRobot('pause', ciclingStates)
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
-  console.log('--------------------------------------')
-  console.log('COMANDO: ' + command)
-  console.log('STATE: ' + state)
-  if (command === 'movel') {
+  if (command === 'left') {
     if (state === 'paused') {
-      setState('movingl')
+      setState('moving_l')
       state = getState()
       console.log('----------------------------------------')
       console.log(`Robô em movimento. Estado atual: "${state}"`)
       await setLeftMove()
       await sendImages()
       await pauseRobot('pause', ciclingStates)
-    } else if (state === 'movingl') {
+    } else if (state === 'moving_l') {
       return { err: 'Robô já está em movimento, direção: esquerda' }
     } else {
       return { err: 'Robô não pode ser movimentado agora' }

@@ -16,17 +16,17 @@ let ciclingStates = {
   },
   'paused': {
     from: 'running',
-    allowed: ['continue', 'reset', 'mover', 'movel']
+    allowed: ['continue', 'reset', 'right', 'left']
   },
   'reseting': {
     from: ['paused', 'running'],
     allowed: ['start']
   },
-  'movingl': {
+  'moving_l': {
     from: ['paused'],
     allowed: ['start', 'reset']
   },
-  'movingr': {
+  'moving_r': {
     from: ['paused'],
     allowed: ['start', 'reset']
   }
@@ -37,8 +37,8 @@ let stateMachine = {
   'pause': pauseRobot,
   'continue': continueRobot,
   'reset': resetState,
-  'movel': moveRobotL,
-  'mover': moveRobotR
+  'left': moveRobotL,
+  'right': moveRobotR
 }
 
 export {
