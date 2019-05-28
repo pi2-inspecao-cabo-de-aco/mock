@@ -11,9 +11,6 @@ export default () => {
     let { body } = req
     if (body && body.command) {
       let command = stateMachine[body.command]
-      console.log('COMMAND AND BODY-------------------------------------------')
-      console.log(command)
-      console.log(body)
       if (command && typeof command === 'function') {
         try {
           let result = await command(body.command, ciclingStates)

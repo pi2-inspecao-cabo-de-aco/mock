@@ -10,7 +10,7 @@ import fsx from 'fs-extra'
 import Path from 'path'
 import nodeZip from 'node-zip'
 import { ftp } from '../ftp-client'
-import util from 'util'
+// import util from 'util'
 
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
@@ -66,7 +66,7 @@ async function initAnalisys (command, ciclingStates) {
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
   if (command === 'start') {
-    if (state === 'waiting' || state === 'paused') {
+    if (state === 'waiting' || state === 'paused' || state === 'reseting') {
       console.log('INICIANDO ANALISE')
       await goRobot()
     } else {
