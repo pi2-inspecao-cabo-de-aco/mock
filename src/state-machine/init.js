@@ -7,6 +7,7 @@ import {
   setLastImageCapture
 } from './state'
 import { sleep, getAllowedCommands } from '../helpers/generics'
+import { endAnalisys } from '../helpers/end-cable'
 import fsx from 'fs-extra'
 import Path from 'path'
 import nodeZip from 'node-zip'
@@ -80,7 +81,7 @@ async function goRobot () {
   // TODO: Simular o fim do curso do robo
   await sleep(100000)
   clearInterval(interval)
-  await endCable(location)
+  await endAnalisys(location)
 }
 
 async function initAnalisys (command, ciclingStates) {
