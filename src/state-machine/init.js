@@ -8,11 +8,7 @@ import {
   getEndCable
 } from './state'
 
-import {
-  sleep,
-  getAllowedCommands
-} from '../helpers/generics'
-
+import { sleep, getAllowedCommands } from '../helpers/generics'
 import { endAnalisys } from '../helpers/end-cable'
 import fsx from 'fs-extra'
 import Path from 'path'
