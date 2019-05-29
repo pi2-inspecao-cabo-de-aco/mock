@@ -8,7 +8,12 @@ function getAllowedCommands (command, ciclingStates) {
   return ciclingStates[command].allowed
 }
 
+function randomValue (array) {
+  return array[Math.floor(Math.random() * array.length)]
+}
+
 export {
   sleep,
-  getAllowedCommands
+  getAllowedCommands,
+  randomValue
 }
