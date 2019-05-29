@@ -59,10 +59,10 @@ async function goRobot () {
       }
       console.log(`------> Arquivo ${filename} enviado.`)
     })
-  }, 2000)
+  }, 5000)
   setCurrentInterval(interval)
   // TODO: Simular o fim do curso do robo
-  await sleep(20000)
+  await sleep(100000)
   clearInterval(interval)
 }
 
