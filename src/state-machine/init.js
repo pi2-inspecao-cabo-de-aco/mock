@@ -80,6 +80,7 @@ async function goRobot () {
   // TODO: Simular o fim do curso do robo
   await sleep(100000)
   clearInterval(interval)
+  await endCable(location)
 }
 
 async function initAnalisys (command, ciclingStates) {
