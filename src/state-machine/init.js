@@ -8,7 +8,12 @@ import {
   getEndCable
 } from './state'
 
-import { sleep, getAllowedCommands } from '../helpers/generics'
+import {
+  sleep,
+  getAllowedCommands,
+  randomValue
+} from '../helpers/generics'
+
 import { endAnalisys } from '../helpers/end-cable'
 import fsx from 'fs-extra'
 import Path from 'path'
@@ -19,7 +24,8 @@ import { ftp } from '../ftp-client'
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
 async function getImages (direction, location) {
-  let imagePath = Path.resolve(IMAGES_FOLDER, `${location}.png`)
+  let imageNumber = randomValue([1, 2, 3, 4])
+  let imagePath = Path.resolve(IMAGES_FOLDER, `${imageNumber}.png`)
   let image = await fsx.readFile(imagePath)
   const zip = nodeZip()
   for (let i = 0; i < 4; i++) {
