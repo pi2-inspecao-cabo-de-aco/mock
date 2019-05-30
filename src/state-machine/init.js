@@ -4,7 +4,8 @@ import {
   setCurrentAnalysisLocation,
   getCurrentAnalysis,
   setCurrentInterval,
-  setLastImageCapture
+  setLastImageCapture,
+  getEndCable
 } from './state'
 
 import {
@@ -63,11 +64,17 @@ async function getImages (direction, location) {
 
 async function goRobot () {
   let { direction, location, lastImageCapture } = getCurrentAnalysis()
+  let endCable = getEndCable()
+
   setState('running')
   let interval = setInterval(async () => {
     if (location === lastImageCapture) {
       setCurrentAnalysisLocation(location + 1)
       location = getCurrentAnalysis().location
+    }
+    if (endCable === location) {
+      await endAnalisys(location)
+      return null
     }
     console.log('---> Recebendo imagens')
     let { zipPath, filename } = await getImages(direction, location)
