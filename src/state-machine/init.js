@@ -23,6 +23,22 @@ async function getImages (direction, location) {
     console.log(`------> Imagem da câmera ${i + 1}.`)
     zip.file(`imagem-cam-${i + 1}.png`, image)
   }
+  let dataPath = Path.resolve(IMAGES_FOLDER, `data.txt`)
+  let dataSensor
+  try {
+    dataSensor = await fsx.readFile(dataPath)
+  } catch (err) {
+    // ensure data.txt creation
+    let array = Array.from(Array(50), (x, index) => index)
+    let string = ''
+    for (let i = 0; i < 10; i++) {
+      string += array.join(',') + '\n'
+    }
+    await fsx.writeFile(dataPath, string)
+    dataSensor = await fsx.readFile(dataPath)
+  }
+  zip.file(`dada.txt`, dataSensor)
+
   console.log('---> Zipando imagens.')
   let data = zip.generate({
     base64: false,
