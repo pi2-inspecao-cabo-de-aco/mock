@@ -24,13 +24,13 @@ import { ftp } from '../ftp-client'
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
 async function getImages (direction, location) {
-  let imageNumber = randomValue([1, 2, 3, 4])
-  let imagePath = Path.resolve(IMAGES_FOLDER, `${imageNumber}.png`)
-  let image = await fsx.readFile(imagePath)
   const zip = nodeZip()
-  for (let i = 0; i < 4; i++) {
-    console.log(`------> Imagem da câmera ${i + 1}.`)
-    zip.file(`imagem-cam-${i + 1}.png`, image)
+  for (let i = 1; i < 5; i++) {
+    let imageNumber = (4 * (location - 1)) + i
+    let imagePath = Path.resolve(IMAGES_FOLDER, `${imageNumber}.png`)
+    let image = await fsx.readFile(imagePath)
+    console.log(`------> Imagem da câmera ${i}.`)
+    zip.file(`imagem-cam-${i}.png`, image)
   }
   let dataPath = Path.resolve(IMAGES_FOLDER, `data.txt`)
   let dataSensor
