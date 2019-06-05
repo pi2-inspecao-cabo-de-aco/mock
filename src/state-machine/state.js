@@ -8,7 +8,7 @@ let state = {
     lastImageCapture: 0
   },
   currentInterval: null,
-  endCable: randomValue([5, 6, 7, 8, 9])
+  endCable: randomValue(Array.from(Array(10), (x, index) => index + 20))
 }
 
 function setState (currentState) {

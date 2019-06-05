@@ -10,7 +10,8 @@ let PUBLIC_FOLDER = Path.resolve(__dirname, '../../public')
 
 async function endAnalisys () {
   let location = getCurrentAnalysis().location
-  let filename = `${location}_end.zip`
+  let time = Date.now()
+  let filename = `${time}-${location}-end.zip`
   let zipPath = Path.join(PUBLIC_FOLDER, filename)
   await fsx.writeFile(zipPath, null, 'binary')
   let zipFile = await fsx.readFile(zipPath)
