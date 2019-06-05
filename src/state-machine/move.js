@@ -3,16 +3,24 @@ import {
   getState,
   getCurrentAnalysis,
   setCurrentAnalysisLocation,
-  setCurrentAnalysisDirection
+  setCurrentAnalysisDirection,
+  getEndCable
 } from './state'
 import { pauseRobot } from './pause'
 import { getImages } from './init'
+import { endAnalisys } from '../helpers/end-cable'
 import { getAllowedCommands } from '../helpers/generics'
 
 import fsx from 'fs-extra'
 import { ftp } from '../ftp-client'
 
 async function moveRobotR (command, ciclingStates) {
+  let { location } = getCurrentAnalysis()
+  let endCable = getEndCable()
+  if (endCable === location) {
+    await endAnalisys(location)
+    return null
+  }
   await pauseRobot('pause', ciclingStates)
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
@@ -41,7 +49,8 @@ async function moveRobotL (command, ciclingStates) {
   console.log('CHECANDO ESTADO DA MÁQUINA...')
   let state = getState()
   console.log(`Estado atual: "${state}". Comando(s) desejado(s): "${getAllowedCommands(state, ciclingStates).join('; ')}"`)
-  if (command === 'left') {
+  let { location } = getCurrentAnalysis()
+  if (command === 'left' && location > 1) {
     if (state === 'paused') {
       setState('moving_l')
       state = getState()
@@ -55,8 +64,10 @@ async function moveRobotL (command, ciclingStates) {
     } else {
       return { err: 'Robô não pode ser movimentado agora' }
     }
+  } else if (location === 1) {
+    return { err: 'Robô já na posição inicial.' }
   } else {
-    return { err: 'Comando ou estado não permitido.' }
+    return { err: 'Comando ou estado não permitido' }
   }
 }
 

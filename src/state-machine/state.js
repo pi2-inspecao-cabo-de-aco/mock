@@ -1,3 +1,5 @@
+import { randomValue } from '../helpers/generics'
+
 let state = {
   state: 'waiting',
   currentAnalysis: {
@@ -5,7 +7,8 @@ let state = {
     location: 1,
     lastImageCapture: 0
   },
-  currentInterval: null
+  currentInterval: null,
+  endCable: randomValue(Array.from(Array(10), (x, index) => index + 20))
 }
 
 function setState (currentState) {
@@ -46,6 +49,10 @@ function getCurrentInterval () {
   return state.currentInterval
 }
 
+function getEndCable () {
+  return state.endCable
+}
+
 export {
   setState,
   getState,
@@ -54,5 +61,6 @@ export {
   setLastImageCapture,
   getCurrentAnalysis,
   setCurrentInterval,
-  getCurrentInterval
+  getCurrentInterval,
+  getEndCable
 }
