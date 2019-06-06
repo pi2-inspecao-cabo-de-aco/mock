@@ -13,22 +13,23 @@ import {
   getAllowedCommands
 } from '../helpers/generics'
 
-import { endAnalisys } from '../helpers/end-cable'
 import fsx from 'fs-extra'
 import Path from 'path'
 import nodeZip from 'node-zip'
+import { ciclingStates } from './index'
+import { pauseRobot } from './pause'
 import { ftp } from '../ftp-client'
-// import util from 'util'
 
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
-async function getImages (direction, location) {
-  let imagePath = Path.resolve(IMAGES_FOLDER, `${location}.png`)
-  let image = await fsx.readFile(imagePath)
+async function getImages (direction, location, endCable = false) {
   const zip = nodeZip()
-  for (let i = 0; i < 4; i++) {
-    console.log(`------> Imagem da câmera ${i + 1}.`)
-    zip.file(`imagem-cam-${i + 1}.png`, image)
+  for (let i = 1; i < 5; i++) {
+    let imageNumber = (4 * (location - 1)) + i
+    let imagePath = Path.resolve(IMAGES_FOLDER, `${imageNumber}.png`)
+    let image = await fsx.readFile(imagePath)
+    console.log(`------> Imagem da câmera ${i}.`)
+    zip.file(`imagem-cam-${i}.png`, image)
   }
   let dataPath = Path.resolve(IMAGES_FOLDER, `data.txt`)
   let dataSensor
@@ -53,7 +54,12 @@ async function getImages (direction, location) {
   })
   let time = Date.now()
   console.log('---> Criando zip')
-  let filename = `${time}-${location}.zip`
+  let filename = ''
+  if (endCable) {
+    filename = `${time}-${location}-end.zip`
+  } else {
+    filename = `${time}-${location}.zip`
+  }
   let zipPath = Path.join(IMAGES_FOLDER, filename)
   await fsx.writeFile(zipPath, data, 'binary')
   setLastImageCapture(location)
@@ -70,12 +76,9 @@ async function goRobot () {
       setCurrentAnalysisLocation(location + 1)
       location = getCurrentAnalysis().location
     }
-    if (endCable === location) {
-      await endAnalisys(location)
-      return null
-    }
     console.log('---> Recebendo imagens')
-    let { zipPath, filename } = await getImages(direction, location)
+    let comparison = endCable === location
+    let { zipPath, filename } = await getImages(direction, location, comparison)
     // Simulando deslocamento do robo
     location = location + 1
     console.log(`---> Enviando arquivo ${filename}`)
@@ -86,8 +89,16 @@ async function goRobot () {
       if (err) {
         console.log(`---------> Error: ${err.message} <---------`)
       }
-      console.log(`------> Arquivo ${filename} enviado.`)
+      if (comparison) {
+        console.log(`------> Arquivo ${filename} enviado. Fim de curso.`)
+      } else {
+        console.log(`------> Arquivo ${filename} enviado.`)
+      }
     })
+    if (comparison) {
+      await pauseRobot('pause', ciclingStates)
+      return null
+    }
   }, 3000)
   setCurrentInterval(interval)
   await sleep(200000)
