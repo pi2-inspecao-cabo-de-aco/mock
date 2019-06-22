@@ -22,6 +22,25 @@ import { ftp } from '../ftp-client'
 
 let IMAGES_FOLDER = Path.resolve(__dirname, '../../public')
 
+async function generateSensorFile (location) {
+  let dataPath = Path.resolve(IMAGES_FOLDER, `data-${location}.txt`)
+  let dataSensor
+  // ensure data.txt creation
+  const AVERAGE = 25
+  const ERROR_RANGE = 7
+  let string = ''
+  for (let i = 0; i < 10; i++) {
+    let array = Array.from(Array(50), (x, index) => {
+      let value = AVERAGE - Math.ceil(Math.random() * ERROR_RANGE)
+      return value
+    })
+    string += array.join(',') + '\n'
+  }
+  await fsx.writeFile(dataPath, string)
+  dataSensor = await fsx.readFile(dataPath)
+  return dataSensor
+}
+
 async function getImages (direction, location, endCable = false) {
   const zip = nodeZip()
   for (let i = 1; i < 5; i++) {
@@ -31,21 +50,8 @@ async function getImages (direction, location, endCable = false) {
     console.log(`------> Imagem da câmera ${i}.`)
     zip.file(`imagem-cam-${i}.png`, image)
   }
-  let dataPath = Path.resolve(IMAGES_FOLDER, `data.txt`)
-  let dataSensor
-  try {
-    dataSensor = await fsx.readFile(dataPath)
-  } catch (err) {
-    // ensure data.txt creation
-    let array = Array.from(Array(50), (x, index) => index)
-    let string = ''
-    for (let i = 0; i < 10; i++) {
-      string += array.join(',') + '\n'
-    }
-    await fsx.writeFile(dataPath, string)
-    dataSensor = await fsx.readFile(dataPath)
-  }
-  zip.file(`dada.txt`, dataSensor)
+  let dataSensor = await generateSensorFile(location)
+  zip.file(`data.txt`, dataSensor)
 
   console.log('---> Zipando imagens.')
   let data = zip.generate({
